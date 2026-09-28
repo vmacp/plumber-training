@@ -4,14 +4,15 @@ on:
   pull_request_target:
     types: [opened, synchronize]
 
-permissions: write-all
+permissions:
+  content: read
 
 jobs:
   preview:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
       - name: Preview
         run: echo "Preview ready for PR ${{ github.event.pull_request.number }}"

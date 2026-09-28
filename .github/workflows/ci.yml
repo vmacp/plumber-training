@@ -5,13 +5,16 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  content: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_STEP_DEBUG: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@main
         with:
@@ -19,10 +22,10 @@ jobs:
 
       - name: Changed files
         id: changed
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96
 
       - name: Install tooling
-        run: curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+        run: curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh -o install.sh && sha256sum -c install.sha256 && bash install.sh
 
       - name: Build
         run: |
@@ -31,4 +34,6 @@ jobs:
 
       - name: Log PR title
         if: github.event_name == 'pull_request'
-        run: echo "PR title = ${{ github.event.pull_request.title }}"
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: echo "PR title = $TITLE"
