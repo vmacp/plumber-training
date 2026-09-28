@@ -19,4 +19,4 @@ jobs:
           persist-credentials: false
       - uses: getplumber/plumber@5067047ef71856a116f7aaf2d52fed93b1c546fa # v0.5.11
         with:
-          soft-fail: "true"      # pour l'instant on observe, sans bloquer
+          min-score: "B"
